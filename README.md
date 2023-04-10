@@ -1,2 +1,7 @@
-# Planificador
-un proyecto para definir los pasos y las estrategias de tu negocio.
+# How to install
+
+```docker network create -d bridge web```
+
+```docker compose build```
+
+```docker compose up -d```
