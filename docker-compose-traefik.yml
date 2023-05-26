@@ -1,0 +1,63 @@
+services:
+  planod:
+    build:
+      context: ./
+      dockerfile: ./docker/dockerfile/Dockerfile
+    depends_on:
+      - plan-db-2
+    networks:
+      - web
+    environment:
+    - HOST=plan-db-2
+    - USER=odoo
+    - PASSWORD=asdjkl123
+    - TZ=Argentina/Buenos Aires
+    container_name: planodoo3
+    labels:
+    - traefik.enable=true
+    - traefik.http.routers.planodoo.rule=Host(`plan.luisesp.cloud`)
+    - traefik.tcp.routers.planodoo.entrypoints=web-secure
+    volumes:
+      - pla-odoo-web-data:/var/lib/odooPl
+      - ./addons:/mnt/extra-addons
+      - ./config:/etc/odoo
+  plan-db-2:
+    image: postgres:12.5
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=asdjkl123
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresqlPl/data/pgdata
+      - TZ=Argentina/Buenos Aires
+    networks:
+      - web
+    volumes:
+      - plan-db-2-data:/var/lib/postgresqlPl/data/pgdata
+  sus-pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=luiesp27@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=asdjkl123
+    volumes:
+      - sus-pgadmin4-data:/var/lib/pgadmin
+    depends_on:
+      - plan-db-2
+    networks:
+      - web
+    restart: always
+    links:
+      - plan-db-2
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pgadminpl.rule=Host(`pgadminpl.luisesp.cloud`)
+      - traefik.tcp.routers.pgadminpl.entrypoints=web-secure
+      #- traefik.http.routers.pgadminpl.tls=true
+
+volumes:
+  pla-odoo-web-data:
+  sus-pgadmin4-data:
+  plan-db-2-data:
+      
+networks:
+  web:
+    external: true

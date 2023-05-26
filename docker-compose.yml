@@ -1,5 +1,5 @@
 services:
-  web:
+  webo:
     build:
       context: ./
       dockerfile: ./docker/dockerfile/Dockerfile
@@ -9,14 +9,14 @@ services:
       - "8075:8074"
       - "8073:8073"
     networks:
-      - web
+      - webo
     environment:
     - HOST=sus-db
     - USER=odoo
     - PASSWORD=asdjkl123
     restart: always
     volumes:
-      - sus-odoo-web-data:/var/lib/odoo
+      - sus-odoo-webo-data:/var/lib/odoo
       - ./addons:/mnt/extra-addons
       - ./config:/etc/odoo
   sus-db:
@@ -27,7 +27,7 @@ services:
       - POSTGRES_USER=odoo
       - PGDATA=/var/lib/postgresql/data/pgdata
     networks:
-      - web
+      - webo
     volumes:
       - sus-db-data:/var/lib/postgresql/data/pgdata
   sus-pgadmin:
@@ -42,16 +42,16 @@ services:
     ports:
       - "81:80"
     networks:
-      - web
+      - webo
     restart: always
     links:
       - sus-db
 
 volumes:
-  sus-odoo-web-data:
+  sus-odoo-webo-data:
   sus-pgadmin4-data:
   sus-db-data:
       
 networks:
-  web:
+  webo:
     external: true
