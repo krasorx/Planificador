@@ -16,7 +16,8 @@ services:
     labels:
     - traefik.enable=true
     - traefik.http.routers.planodoo.rule=Host(`plan.luisesp.cloud`)
-    - traefik.tcp.routers.planodoo.entrypoints=web-secure
+    #- traefik.http.routers.planodoo.entrypoints=web-secured
+    - traefik.http.services.planodoo.loadbalancer.server.port=8069
     volumes:
       - pla-odoo-web-data:/var/lib/odooPl
       - ./addons:/mnt/extra-addons
@@ -50,8 +51,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.pgadminpl.rule=Host(`pgadminpl.luisesp.cloud`)
-      - traefik.tcp.routers.pgadminpl.entrypoints=web-secure
+      #- traefik.http.routers.pgadminpl.entrypoints=web-secured
       #- traefik.http.routers.pgadminpl.tls=true
+      - traefik.http.services.pgadminpl.loadbalancer.server.port=80
 
 volumes:
   pla-odoo-web-data:
