@@ -12,11 +12,13 @@ services:
     - USER=odoo
     - PASSWORD=asdjkl123
     - TZ=Argentina/Buenos Aires
-    container_name: planodoo3
+    container_name: planodoo
     labels:
     - traefik.enable=true
     - traefik.http.routers.planodoo.rule=Host(`plan.luisesp.cloud`)
     #- traefik.http.routers.planodoo.entrypoints=web-secured
+    #- traefik.http.routers.planodoo.tls=true
+    #- traefik.http.routers.planodoo.tls.certresolver=lets-encrypt
     - traefik.http.services.planodoo.loadbalancer.server.port=8069
     volumes:
       - pla-odoo-web-data:/var/lib/odooPl
